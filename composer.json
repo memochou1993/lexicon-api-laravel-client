@@ -23,7 +23,10 @@
         "laravel": {
             "providers": [
                 "Memochou1993\\Localize\\LocalizeServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Localize": "Memochou1993\\Localize\\Facades\\Localize"
+            }
         }
     }
 }
