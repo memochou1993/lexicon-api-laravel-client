@@ -1,5 +1,5 @@
 {
-    "name": "memochou/localize-client-laravel",
+    "name": "memochou1993/localize-client-laravel",
     "description": "Localize API client for Laravel",
     "type": "library",
     "authors": [
@@ -9,7 +9,12 @@
         }
     ],
     "require": {
-        "symfony/var-exporter": "^5.0"
+        "symfony/var-exporter": "^5.0",
+        "guzzlehttp/guzzle": "^6.5",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^5.3"
     },
     "autoload": {
         "psr-4": {
@@ -18,6 +23,11 @@
         "files": [
             "src/helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MemoChou\\Localize\\Tests\\": "tests/"
+        }
     },
     "extra": {
         "laravel": {

@@ -2,30 +2,88 @@
 
 namespace MemoChou\Localize;
 
-use Exception;
-use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\VarExporter\Exception\ExceptionInterface;
 use Symfony\Component\VarExporter\VarExporter;
 
-class Localize extends Client
+class Localize
 {
     /**
      * @var array
      */
-    protected $project;
+    protected array $project;
 
     /**
-     * @throws Exception
+     * @var Collection|null
+     */
+    protected ?Collection $expectedLanguages = null;
+
+    /**
+     * @return void
      */
     public function __construct()
     {
-        try {
-            $this->fetch();
-        } catch (Exception $e) {
-            throw $e;
-        }
+        $this->fetch();
+    }
+
+    /**
+     * @return string
+     */
+    protected function host(): string
+    {
+        return config('localize.host');
+    }
+
+    /**
+     * @return string
+     */
+    protected function projectId(): string
+    {
+        return config('localize.project_id');
+    }
+
+    /**
+     * @return string
+     */
+    protected function url(): string
+    {
+        return '/api/client/projects/'.$this->projectId();
+    }
+
+    /**
+     * @return string
+     */
+    protected function secretKey(): string
+    {
+        return config('localize.secret_key');
+    }
+
+    /**
+     * @return string
+     */
+    protected function directory(): string
+    {
+        return config('localize.directory');
+    }
+
+    /**
+     * @return string
+     */
+    protected function filename(): string
+    {
+        return config('localize.filename');
+    }
+
+    /**
+     * @return array
+     */
+    protected function headers(): array
+    {
+        return [
+            'X-Localize-Secret-Key' => $this->secretKey(),
+        ];
     }
 
     /**
@@ -40,7 +98,7 @@ class Localize extends Client
     /**
      * @return Collection
      */
-    protected function getRawKeys(): Collection
+    protected function getKeys(): Collection
     {
         return collect($this->project['keys']);
     }
@@ -48,17 +106,19 @@ class Localize extends Client
     /**
      * @return Collection
      */
-    protected function getRawLanguages(): Collection
+    public function getLanguages(): Collection
     {
-        return collect($this->project['languages']);
+        return collect($this->project['languages'])->pluck('name');
     }
 
     /**
      * @return Collection
      */
-    public function getLanguages(): Collection
+    protected function getExpectedLanguages(): Collection
     {
-        return $this->getRawLanguages()->pluck('name');
+        return collect($this->expectedLanguages)->whenEmpty(function () {
+            return $this->getLanguages();
+        });
     }
 
     /**
@@ -71,29 +131,28 @@ class Localize extends Client
     }
 
     /**
+     * @param mixed $language
+     * @return bool
+     */
+    protected function hasExpectedLanguage($language): bool
+    {
+        return $this->getExpectedLanguages()->contains($language);
+    }
+
+    /**
      * @return void
-     * @throws Exception
      */
     protected function fetch(): void
     {
-        $uri = 'api/client/projects/'.$this->getProjectId();
+        $response = Http::retry(3, 500)
+            ->baseUrl($this->host())
+            ->withHeaders($this->headers())
+            ->get($this->url());
 
-        try {
-            $response = $this->getClient()->get($uri, [
-                'headers' => $this->getHeaders(),
-            ]);
-        } catch (ClientException $e) {
-            $this->exception = $e;
+        // TODO: throw exception
+        // $response->throw();
 
-            $message = vsprintf('%s %s', [
-                $e->getResponse()->getStatusCode(),
-                $e->getResponse()->getReasonPhrase()
-            ]);
-
-            throw new Exception($message);
-        }
-
-        $data = json_decode($response->getBody(), true);
+        $data = json_decode($response->body(), true);
 
         $this->setProject($data['data']);
     }
@@ -104,7 +163,7 @@ class Localize extends Client
      */
     protected function formatKeys(string $language): array
     {
-        return $this->getRawKeys()
+        return $this->getKeys()
             ->mapWithKeys(function ($key) use ($language) {
                 return [
                     $key['name'] => $this->formatValues($key['values'], $language),
@@ -139,30 +198,40 @@ class Localize extends Client
 
     /**
      * @param array|string $languages
-     * @return void
+     * @return self
      */
-    public function export(...$languages): void
+    public function only(...$languages): self
     {
-        collect($languages)
+        $this->expectedLanguages = collect($languages)
             ->flatten()
-            ->each(function ($language) {
-                if (! $this->hasLanguage($language)) {
-                    return;
-                }
+            ->intersect($this->getLanguages());
 
-                $this->save($language);
-            });
+        return $this;
     }
 
     /**
-     * @return void
+     * @param array|string $languages
+     * @return self
      */
-    public function exportAll(): void
+    public function except(...$languages): self
     {
-        $this->getLanguages()
+        $this->expectedLanguages = $this->getLanguages()
+            ->diff(collect($languages)->flatten());
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function export(): self
+    {
+        $this->getExpectedLanguages()
             ->each(function ($language) {
                 $this->save($language);
             });
+
+        return $this;
     }
 
     /**
@@ -185,7 +254,7 @@ class Localize extends Client
         ]);
 
         $directory = vsprintf('%s/%s', [
-            $this->getDirectory(),
+            $this->directory(),
             $language,
         ]);
 
@@ -193,9 +262,27 @@ class Localize extends Client
 
         $filename = vsprintf('%s/%s.php', [
             $directory,
-            $this->getFilename(),
+            $this->filename(),
         ]);
 
         file_put_contents($filename, $data);
+    }
+
+    /**
+     * @return self
+     */
+    public function clear(): self
+    {
+        $directories = File::directories($this->directory());
+
+        collect($directories)
+            ->reject(function ($directory) {
+                return $this->hasExpectedLanguage(basename($directory));
+            })
+            ->each(function ($directory) {
+                File::deleteDirectory($directory);
+            });
+
+        return $this;
     }
 }
