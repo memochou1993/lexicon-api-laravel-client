@@ -1,5 +1,5 @@
 {
-    "name": "memochou1993/localize-client-laravel",
+    "name": "memochou/localize-client-laravel",
     "description": "Localize API client for Laravel",
     "type": "library",
     "authors": [
@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Memochou1993\\Localize\\": "src/"
+            "MemoChou\\Localize\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -22,10 +22,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Memochou1993\\Localize\\LocalizeServiceProvider"
+                "MemoChou\\Localize\\LocalizeServiceProvider"
             ],
             "aliases": {
-                "Localize": "Memochou1993\\Localize\\Facades\\Localize"
+                "Localize": "MemoChou\\Localize\\Facades\\Localize"
             }
         }
     }

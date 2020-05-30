@@ -1,6 +1,6 @@
 <?php
 
-namespace Memochou1993\Localize\Facades;
+namespace MemoChou\Localize\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
