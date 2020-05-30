@@ -32,7 +32,7 @@ class LocalizeTest extends TestCase
     private function fetch(string $filename): void
     {
         Http::fake(function () use ($filename) {
-            $data = file_get_contents('./data/'.$filename.'.json');
+            $data = file_get_contents(__DIR__.'/data/'.$filename.'.json');
 
             $body = json_decode($data, true);
 
