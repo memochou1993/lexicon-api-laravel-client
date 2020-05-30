@@ -8,6 +8,8 @@ return [
 
     'secret_key' => env('LOCALIZE_SECRET_KEY'),
 
+    'directory' => resource_path('lang'),
+
     'filename' => 'localize',
 
 ];

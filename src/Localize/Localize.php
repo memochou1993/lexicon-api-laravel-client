@@ -143,12 +143,6 @@ class Localize extends Client
      */
     public function export(...$languages): void
     {
-        if (! $languages) {
-            $this->exportAll();
-
-            return;
-        }
-
         collect($languages)
             ->flatten()
             ->each(function ($language) {
@@ -191,7 +185,7 @@ class Localize extends Client
         ]);
 
         $directory = vsprintf('%s/%s', [
-            resource_path('lang'),
+            $this->getDirectory(),
             $language,
         ]);
 

@@ -44,6 +44,14 @@ class Client
     /**
      * @return string
      */
+    public function getDirectory(): string
+    {
+        return config('localize.directory');
+    }
+
+    /**
+     * @return string
+     */
     public function getFilename(): string
     {
         return config('localize.filename');
