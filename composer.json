@@ -13,10 +13,17 @@
     },
     "autoload": {
         "psr-4": {
-            "Memochou1993\\Localize\\": "src/Localize/"
+            "Memochou1993\\Localize\\": "src/"
         },
         "files": [
             "src/helpers.php"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Memochou1993\\Localize\\LocalizeServiceProvider"
+            ]
+        }
     }
 }
