@@ -22,7 +22,7 @@ class Client
      */
     public function getHost(): string
     {
-        return env('LOCALIZE_HOST'); // TODO: use config
+        return config('localize.host');
     }
 
     /**
@@ -30,7 +30,7 @@ class Client
      */
     public function getProjectId(): string
     {
-        return env('LOCALIZE_PROJECT_ID'); // TODO: use config
+        return config('localize.project_id');
     }
 
     /**
@@ -38,7 +38,7 @@ class Client
      */
     public function getSecretKey(): string
     {
-        return env('LOCALIZE_SECRET_KEY'); // TODO: use config
+        return config('localize.secret_key');
     }
 
     /**
@@ -46,7 +46,7 @@ class Client
      */
     public function getFilename(): string
     {
-        return 'localize'; // TODO: use config
+        return config('localize.filename');
     }
 
     /**

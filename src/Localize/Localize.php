@@ -76,12 +76,7 @@ class Localize extends Client
      */
     protected function fetch(): void
     {
-        $uri = vsprintf('/%s/%s/%s/%s', [
-            'api',
-            'client',
-            'projects',
-            $this->getProjectId()
-        ]);
+        $uri = 'api/client/projects/'.$this->getProjectId();
 
         try {
             $response = $this->getClient()->get($uri, [
