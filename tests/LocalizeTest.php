@@ -1,10 +1,10 @@
 <?php
 
-namespace MemoChou\Localize\Tests;
+namespace MemoChou1993\Localize\Tests;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
-use MemoChou\Localize\Facades\Localize;
+use MemoChou1993\Localize\Facades\Localize;
 
 class LocalizeTest extends TestCase
 {
@@ -16,6 +16,34 @@ class LocalizeTest extends TestCase
         parent::setUp();
 
         File::ensureDirectoryExists(config('localize.directory').'/default');
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetLanguages(): void
+    {
+        $this->request('project');
+
+        $expected = [
+            'Language 1',
+            'Language 2',
+        ];
+
+        $actual = Localize::getLanguages()->toArray();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
+    public function testHasLanguages(): void
+    {
+        $this->request('project');
+
+        $this->assertTrue(Localize::hasLanguage('Language 1'));
+        $this->assertFalse(Localize::hasLanguage('Language 3'));
     }
 
     /**

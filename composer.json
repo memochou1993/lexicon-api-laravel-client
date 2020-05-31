@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MemoChou\\Localize\\": "src/"
+            "MemoChou1993\\Localize\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -28,16 +28,16 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "MemoChou\\Localize\\Tests\\": "tests/"
+            "MemoChou1993\\Localize\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "MemoChou\\Localize\\LocalizeServiceProvider"
+                "MemoChou1993\\Localize\\LocalizeServiceProvider"
             ],
             "aliases": {
-                "Localize": "MemoChou\\Localize\\Facades\\Localize"
+                "Localize": "MemoChou1993\\Localize\\Facades\\Localize"
             }
         }
     }

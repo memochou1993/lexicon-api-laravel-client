@@ -1,11 +1,11 @@
 <?php
 
-namespace MemoChou\Localize\Tests;
+namespace MemoChou1993\Localize\Tests;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Http;
-use MemoChou\Localize\Facades\Localize;
-use MemoChou\Localize\LocalizeServiceProvider;
+use MemoChou1993\Localize\Facades\Localize;
+use MemoChou1993\Localize\LocalizeServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase

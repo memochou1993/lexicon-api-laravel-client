@@ -1,6 +1,6 @@
 <?php
 
-namespace MemoChou\Localize;
+namespace MemoChou1993\Localize;
 
 use Illuminate\Support\ServiceProvider;
 
