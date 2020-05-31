@@ -16,5 +16,8 @@
     </filter>
     <php>
         <server name="APP_ENV" value="testing"/>
+        <server name="LOCALIZE_HOST" value=""/>
+        <server name="LOCALIZE_PROJECT_ID" value=""/>
+        <server name="LOCALIZE_SECRET_KEY" value=""/>
     </php>
 </phpunit>

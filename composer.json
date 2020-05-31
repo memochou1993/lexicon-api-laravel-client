@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-json": "*",
         "symfony/var-exporter": "^5.0",
         "guzzlehttp/guzzle": "^6.5",

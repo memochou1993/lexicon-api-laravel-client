@@ -21,14 +21,6 @@ class Localize
     protected ?Collection $expectedLanguages = null;
 
     /**
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->fetch();
-    }
-
-    /**
      * @return string
      */
     protected function host(): string
@@ -96,11 +88,19 @@ class Localize
     }
 
     /**
+     * @return array
+     */
+    protected function getProject(): array
+    {
+        return $this->project ?? $this->fetchProject();
+    }
+
+    /**
      * @return Collection
      */
     protected function getKeys(): Collection
     {
-        return collect($this->project['keys']);
+        return collect($this->getProject()['keys']);
     }
 
     /**
@@ -108,7 +108,7 @@ class Localize
      */
     public function getLanguages(): Collection
     {
-        return collect($this->project['languages'])->pluck('name');
+        return collect($this->getProject()['languages'])->pluck('name');
     }
 
     /**
@@ -131,18 +131,9 @@ class Localize
     }
 
     /**
-     * @param mixed $language
-     * @return bool
+     * @return array
      */
-    protected function hasExpectedLanguage($language): bool
-    {
-        return $this->getExpectedLanguages()->contains($language);
-    }
-
-    /**
-     * @return void
-     */
-    protected function fetch(): void
+    protected function fetchProject(): array
     {
         $response = Http::retry(3, 500)
             ->baseUrl($this->host())
@@ -154,7 +145,11 @@ class Localize
 
         $data = json_decode($response->body(), true);
 
-        $this->setProject($data['data']);
+        $project = $data['data'];
+
+        $this->setProject($project);
+
+        return $project;
     }
 
     /**
@@ -222,16 +217,14 @@ class Localize
     }
 
     /**
-     * @return self
+     * @return void
      */
-    public function export(): self
+    public function export(): void
     {
         $this->getExpectedLanguages()
             ->each(function ($language) {
                 $this->save($language);
             });
-
-        return $this;
     }
 
     /**
@@ -271,13 +264,13 @@ class Localize
     /**
      * @return self
      */
-    public function clear(): self
+    public function flush(): self
     {
         $directories = File::directories($this->directory());
 
         collect($directories)
-            ->reject(function ($directory) {
-                return $this->hasExpectedLanguage(basename($directory));
+            ->filter(function ($directory) {
+                return $this->hasLanguage(basename($directory));
             })
             ->each(function ($directory) {
                 File::deleteDirectory($directory);
