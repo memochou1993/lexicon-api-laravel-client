@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \MemoChou1993\Localize\Localize only(array|string ...$languages)
  * @method static \MemoChou1993\Localize\Localize except(array|string ...$languages)
  * @method static void export(array|string ...$languages)
- * @method static \MemoChou1993\Localize\Localize flush()
+ * @method static \MemoChou1993\Localize\Localize clear()
  *
  * @see \MemoChou1993\Localize\Localize
  */

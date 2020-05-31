@@ -264,7 +264,7 @@ class Localize
     /**
      * @return self
      */
-    public function flush(): self
+    public function clear(): self
     {
         $directories = File::directories($this->directory());
 

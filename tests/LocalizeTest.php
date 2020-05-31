@@ -53,7 +53,7 @@ class LocalizeTest extends TestCase
     {
         $this->request('project');
 
-        Localize::flush()->only('Language 1')->export();
+        Localize::clear()->only('Language 1')->export();
 
         App::setLocale('Language 1');
         $this->assertEquals('Value 7', ___('Key 2'));
@@ -69,7 +69,7 @@ class LocalizeTest extends TestCase
     {
         $this->request('project');
 
-        Localize::flush()->except('Language 1')->export();
+        Localize::clear()->except('Language 1')->export();
 
         App::setLocale('Language 1');
         $this->assertEquals('localize.Key 2', ___('Key 2'));
@@ -85,7 +85,7 @@ class LocalizeTest extends TestCase
     {
         $this->request('project');
 
-        Localize::flush()->export();
+        Localize::clear()->export();
 
         App::setLocale('Language 1');
         $this->assertEquals('Value 7', ___('Key 2'));
@@ -97,11 +97,11 @@ class LocalizeTest extends TestCase
     /**
      * @return void
      */
-    public function testFlush(): void
+    public function testClear(): void
     {
         $this->request('project');
 
-        Localize::flush();
+        Localize::clear();
 
         App::setLocale('Language 1');
         $this->assertEquals('localize.Key 2', ___('Key 2'));

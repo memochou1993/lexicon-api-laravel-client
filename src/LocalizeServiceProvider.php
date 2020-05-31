@@ -3,6 +3,8 @@
 namespace MemoChou1993\Localize;
 
 use Illuminate\Support\ServiceProvider;
+use MemoChou1993\Localize\Console\ClearCommand;
+use MemoChou1993\Localize\Console\ExportCommand;
 
 class LocalizeServiceProvider extends ServiceProvider
 {
@@ -32,5 +34,12 @@ class LocalizeServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/localize.php' => config_path('localize.php'),
         ]);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ExportCommand::class,
+                ClearCommand::class,
+            ]);
+        }
     }
 }
