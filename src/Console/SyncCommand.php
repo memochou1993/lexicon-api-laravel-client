@@ -5,21 +5,21 @@ namespace MemoChou1993\Localize\Console;
 use Illuminate\Console\Command;
 use MemoChou1993\Localize\Facades\Localize;
 
-class ExportCommand extends Command
+class SyncCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'localize:export';
+    protected $signature = 'localize:sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Export language resources';
+    protected $description = 'Sync language files';
 
     /**
      * Create a new command instance.

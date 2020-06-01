@@ -5,7 +5,7 @@ namespace MemoChou1993\Localize;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use MemoChou1993\Localize\Console\ClearCommand;
-use MemoChou1993\Localize\Console\ExportCommand;
+use MemoChou1993\Localize\Console\SyncCommand;
 
 class LocalizeServiceProvider extends ServiceProvider
 {
@@ -38,7 +38,7 @@ class LocalizeServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
-                ExportCommand::class,
+                SyncCommand::class,
                 ClearCommand::class,
             ]);
         }

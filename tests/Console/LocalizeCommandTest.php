@@ -21,9 +21,9 @@ class LocalizeCommandTest extends TestCase
     /**
      * @return void
      */
-    public function testExport(): void
+    public function testSync(): void
     {
-        $this->artisan('localize:export');
+        $this->artisan('localize:sync');
 
         $this->assertTrue(File::exists(resource_path('lang/Language 1')));
         $this->assertTrue(File::exists(resource_path('lang/Language 2')));

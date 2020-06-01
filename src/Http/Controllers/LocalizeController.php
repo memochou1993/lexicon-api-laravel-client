@@ -14,7 +14,7 @@ class LocalizeController extends Controller
      *
      * @return JsonResponse
      */
-    public function export()
+    public function sync()
     {
         Localize::export();
 

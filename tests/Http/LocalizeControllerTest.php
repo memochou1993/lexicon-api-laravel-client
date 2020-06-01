@@ -21,7 +21,7 @@ class LocalizeControllerTest extends TestCase
     /**
      * @return void
      */
-    public function testExport(): void
+    public function testSync(): void
     {
         $this->withHeader('X-Localize-Secret-Key', 'secret')
             ->get(config('localize.path'))

@@ -19,7 +19,7 @@ class ClearCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Clear language resources';
+    protected $description = 'Clear language files';
 
     /**
      * Create a new command instance.
