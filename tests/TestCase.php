@@ -36,7 +36,7 @@ class TestCase extends OrchestraTestCase
      * @param string $filename
      * @return void
      */
-    protected function request(string $filename): void
+    protected function prepare(string $filename): void
     {
         Http::fake(function () use ($filename) {
             $data = file_get_contents(__DIR__.'/data/'.$filename.'.json');

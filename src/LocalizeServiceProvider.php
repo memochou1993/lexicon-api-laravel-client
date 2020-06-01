@@ -2,6 +2,7 @@
 
 namespace MemoChou1993\Localize;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use MemoChou1993\Localize\Console\ClearCommand;
 use MemoChou1993\Localize\Console\ExportCommand;
@@ -41,5 +42,13 @@ class LocalizeServiceProvider extends ServiceProvider
                 ClearCommand::class,
             ]);
         }
+
+        Route::group([
+            'namespace' => 'MemoChou1993\Localize\Http\Controllers',
+            'prefix' => config('localize.path'),
+            // 'middleware' => config('telescope.middleware', []), // TODO
+        ], function () {
+            $this->loadRoutesFrom(__DIR__ . '/Http/routes.php');
+        });
     }
 }

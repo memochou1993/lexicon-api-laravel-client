@@ -15,7 +15,11 @@ class LocalizeTest extends TestCase
     {
         parent::setUp();
 
-        File::ensureDirectoryExists(config('localize.directory').'/default');
+        File::ensureDirectoryExists(
+            config('localize.directory').'/zh-TW'
+        );
+
+        $this->prepare('project');
     }
 
     /**
@@ -23,8 +27,6 @@ class LocalizeTest extends TestCase
      */
     public function testGetLanguages(): void
     {
-        $this->request('project');
-
         $expected = [
             'Language 1',
             'Language 2',
@@ -40,8 +42,6 @@ class LocalizeTest extends TestCase
      */
     public function testHasLanguages(): void
     {
-        $this->request('project');
-
         $this->assertTrue(Localize::hasLanguage('Language 1'));
         $this->assertFalse(Localize::hasLanguage('Language 3'));
     }
@@ -51,9 +51,7 @@ class LocalizeTest extends TestCase
      */
     public function testExportOnly(): void
     {
-        $this->request('project');
-
-        Localize::clear()->only('Language 1')->export();
+        Localize::only('Language 1')->export();
 
         App::setLocale('Language 1');
         $this->assertEquals('Value 7', ___('Key 2'));
@@ -67,9 +65,7 @@ class LocalizeTest extends TestCase
      */
     public function testExportExcept(): void
     {
-        $this->request('project');
-
-        Localize::clear()->except('Language 1')->export();
+        Localize::except('Language 1')->export();
 
         App::setLocale('Language 1');
         $this->assertEquals('localize.Key 2', ___('Key 2'));
@@ -83,9 +79,7 @@ class LocalizeTest extends TestCase
      */
     public function testExport(): void
     {
-        $this->request('project');
-
-        Localize::clear()->export();
+        Localize::export();
 
         App::setLocale('Language 1');
         $this->assertEquals('Value 7', ___('Key 2'));
@@ -99,7 +93,7 @@ class LocalizeTest extends TestCase
      */
     public function testClear(): void
     {
-        $this->request('project');
+        Localize::export();
 
         Localize::clear();
 
@@ -115,7 +109,11 @@ class LocalizeTest extends TestCase
      */
     protected function tearDown(): void
     {
-        $this->assertTrue(File::isDirectory(config('localize.directory').'/default'));
+        Localize::clear();
+
+        $this->assertTrue(
+            File::isDirectory(config('localize.directory').'/zh-TW')
+        );
 
         parent::tearDown();
     }
