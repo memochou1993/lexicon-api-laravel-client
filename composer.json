@@ -1,7 +1,7 @@
 {
     "name": "memochou1993/localize-client-laravel",
-    "type": "library",
     "description": "Localize API client for Laravel",
+    "type": "library",
     "keywords": [
         "localization"
     ],
