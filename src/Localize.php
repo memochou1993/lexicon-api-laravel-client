@@ -55,14 +55,6 @@ class Localize
     /**
      * @return string
      */
-    protected function directory(): string
-    {
-        return config('localize.directory');
-    }
-
-    /**
-     * @return string
-     */
     protected function filename(): string
     {
         return config('localize.filename');
@@ -247,7 +239,7 @@ class Localize
         ]);
 
         $directory = vsprintf('%s/%s', [
-            $this->directory(),
+            resource_path('lang'),
             $language,
         ]);
 
@@ -266,7 +258,7 @@ class Localize
      */
     public function clear(): self
     {
-        $directories = File::directories($this->directory());
+        $directories = File::directories(resource_path('lang'));
 
         collect($directories)
             ->filter(function ($directory) {

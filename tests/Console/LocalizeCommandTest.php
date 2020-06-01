@@ -1,9 +1,10 @@
 <?php
 
-namespace MemoChou1993\Localize\Tests;
+namespace MemoChou1993\Localize\Tests\Console;
 
-use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\File;
 use MemoChou1993\Localize\Facades\Localize;
+use MemoChou1993\Localize\Tests\TestCase;
 
 class LocalizeCommandTest extends TestCase
 {
@@ -24,11 +25,8 @@ class LocalizeCommandTest extends TestCase
     {
         $this->artisan('localize:export');
 
-        App::setLocale('Language 1');
-        $this->assertEquals('Value 7', ___('Key 2'));
-
-        App::setLocale('Language 2');
-        $this->assertEquals('Value 14', ___('Key 3'));
+        $this->assertTrue(File::exists(resource_path('lang/Language 1')));
+        $this->assertTrue(File::exists(resource_path('lang/Language 2')));
     }
 
     /**
@@ -38,13 +36,13 @@ class LocalizeCommandTest extends TestCase
     {
         Localize::export();
 
+        $this->assertTrue(File::exists(resource_path('lang/Language 1')));
+        $this->assertTrue(File::exists(resource_path('lang/Language 2')));
+
         $this->artisan('localize:clear');
 
-        App::setLocale('Language 1');
-        $this->assertEquals('localize.Key 2', ___('Key 2'));
-
-        App::setLocale('Language 2');
-        $this->assertEquals('localize.Key 3', ___('Key 3'));
+        $this->assertFalse(File::exists(resource_path('lang/Language 1')));
+        $this->assertFalse(File::exists(resource_path('lang/Language 2')));
     }
 
     /**

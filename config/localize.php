@@ -1,5 +1,7 @@
 <?php
 
+use MemoChou1993\Localize\Http\Middleware\Authorize;
+
 return [
 
     'host' => env('LOCALIZE_HOST'),
@@ -10,7 +12,9 @@ return [
 
     'path' => 'localize',
 
-    'directory' => resource_path('lang'),
+    'middleware' => [
+        Authorize::class,
+    ],
 
     'filename' => 'localize',
 

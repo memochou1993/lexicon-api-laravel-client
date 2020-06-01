@@ -46,9 +46,9 @@ class LocalizeServiceProvider extends ServiceProvider
         Route::group([
             'namespace' => 'MemoChou1993\Localize\Http\Controllers',
             'prefix' => config('localize.path'),
-            // 'middleware' => config('telescope.middleware', []), // TODO
+            'middleware' => config('localize.middleware', []),
         ], function () {
-            $this->loadRoutesFrom(__DIR__ . '/Http/routes.php');
+            $this->loadRoutesFrom(__DIR__.'/Http/routes.php');
         });
     }
 }
