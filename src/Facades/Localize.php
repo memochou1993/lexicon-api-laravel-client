@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \MemoChou1993\Localize\Localize except(array|string ...$languages)
  * @method static void export(array|string ...$languages)
  * @method static \MemoChou1993\Localize\Localize clear()
+ * @method static string trans($key = null, $number = 0, array $replace = [], $locale = null)
  *
  * @see \MemoChou1993\Localize\Localize
  */

@@ -4,6 +4,7 @@ namespace MemoChou1993\Localize\Tests;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
+use Illuminate\Translation\Translator;
 use MemoChou1993\Localize\Facades\Localize;
 
 class LocalizeTest extends TestCase
@@ -89,6 +90,28 @@ class LocalizeTest extends TestCase
 
         $this->assertFalse(File::exists(resource_path('lang/Language 1')));
         $this->assertFalse(File::exists(resource_path('lang/Language 2')));
+    }
+
+    /**
+     * @return void
+     */
+    public function testTrans(): void
+    {
+        Localize::export();
+
+        $this->assertTrue(Localize::trans() === '');
+        $this->assertTrue(___() === null);
+        $this->assertTrue(localize() === app(Translator::class));
+
+        App::setLocale('Language 1');
+        $this->assertEquals('Value 7', Localize::trans('Key 2'));
+        $this->assertEquals('Value 7', ___('Key 2'));
+        $this->assertEquals('Value 7', localize('Key 2'));
+
+        App::setLocale('Language 2');
+        $this->assertEquals('Value 14', Localize::trans('Key 3'));
+        $this->assertEquals('Value 14', ___('Key 3'));
+        $this->assertEquals('Value 14', localize('Key 3'));
     }
 
     /**

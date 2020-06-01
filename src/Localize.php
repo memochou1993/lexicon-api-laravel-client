@@ -270,4 +270,22 @@ class Localize
 
         return $this;
     }
+
+    /**
+     * @param string|null $key
+     * @param int $number
+     * @param array $replace
+     * @param null $locale
+     * @return string
+     */
+    public function trans($key = null, $number = 0, array $replace = [], $locale = null): string
+    {
+        if (is_null($key)) {
+            return '';
+        }
+
+        $key = sprintf('%s.%s', config('localize.filename'), $key);
+
+        return trans_choice($key, $number, $replace, $locale);
+    }
 }

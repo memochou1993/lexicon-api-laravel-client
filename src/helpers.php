@@ -4,15 +4,21 @@ if (! function_exists('localize')) {
     /**
      * Translates the given message based on a count.
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  \Countable|int|array  $number
      * @param  array  $replace
      * @param  string|null  $locale
-     * @return string
+     * @return \Illuminate\Contracts\Translation\Translator|string
      */
-    function localize($key, $number = 0, array $replace = [], $locale = null)
+    function localize($key = null, $number = 0, array $replace = [], $locale = null)
     {
-        return app('translator')->choice('localize.'.$key, $number, $replace, $locale);
+        if (is_null($key)) {
+            return app('translator');
+        }
+
+        $key = sprintf('%s.%s', config('localize.filename'), $key);
+
+        return app('translator')->choice($key, $number, $replace, $locale);
     }
 }
 
@@ -20,14 +26,18 @@ if (! function_exists('___')) {
     /**
      * Translates the given message based on a count.
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  \Countable|int|array  $number
      * @param  array  $replace
      * @param  string|null  $locale
-     * @return string
+     * @return string|null
      */
-    function ___($key, $number = 0, array $replace = [], $locale = null)
+    function ___($key = null, $number = 0, array $replace = [], $locale = null)
     {
+        if (is_null($key)) {
+            return $key;
+        }
+
         return localize($key, $number, $replace, $locale);
     }
 }
