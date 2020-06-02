@@ -26,12 +26,13 @@ class LocalizeTest extends TestCase
      */
     public function testGetLanguages(): void
     {
-        $languages = [
-            'Language 1',
-            'Language 2',
-        ];
-
-        $this->assertEquals($languages, Localize::getLanguages()->toArray());
+        $this->assertEquals(
+            [
+                'Language 1',
+                'Language 2',
+            ],
+            Localize::getLanguages()->toArray(),
+        );
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace MemoChou1993\Localize;
 
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
@@ -123,25 +124,25 @@ class Localize
     }
 
     /**
-     * @return array
+     * @return array|void
      */
-    protected function fetchProject(): array
+    protected function fetchProject()
     {
-        $response = Http::retry(3, 500)
-            ->baseUrl($this->host())
-            ->withHeaders($this->headers())
-            ->get($this->url());
+        try {
+            $response = Http::retry(3, 500)
+                ->baseUrl($this->host())
+                ->withHeaders($this->headers())
+                ->get($this->url())
+                ->throw();
 
-        // TODO: throw exception
-        // $response->throw();
+            $data = json_decode($response->body(), true)['data'];
 
-        $data = json_decode($response->body(), true);
+            $this->setProject($data);
 
-        $project = $data['data'];
-
-        $this->setProject($project);
-
-        return $project;
+            return $data;
+        } catch (RequestException $e) {
+            abort($e->getCode(), $e->getMessage());
+        }
     }
 
     /**
