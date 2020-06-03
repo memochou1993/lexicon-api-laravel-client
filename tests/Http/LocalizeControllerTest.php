@@ -2,22 +2,11 @@
 
 namespace MemoChou1993\Localize\Tests\Http;
 
-use Illuminate\Support\Facades\File;
 use MemoChou1993\Localize\Facades\Localize;
 use MemoChou1993\Localize\Tests\TestCase;
 
 class LocalizeControllerTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->prepare('project'); // TODO: should be removed
-    }
-
     /**
      * @return void
      */
@@ -30,8 +19,9 @@ class LocalizeControllerTest extends TestCase
             ->json('GET', config('localize.path'))
             ->assertNoContent();
 
-        $this->assertTrue(File::exists(resource_path('lang/Language 1')));
-        $this->assertTrue(File::exists(resource_path('lang/Language 2')));
+        $language = Localize::getLanguages()->first();
+
+        $this->assertLanguageDirectoryExists($language);
     }
 
     /**
@@ -41,8 +31,9 @@ class LocalizeControllerTest extends TestCase
     {
         Localize::export();
 
-        $this->assertTrue(File::exists(resource_path('lang/Language 1')));
-        $this->assertTrue(File::exists(resource_path('lang/Language 2')));
+        $language = Localize::getLanguages()->first();
+
+        $this->assertLanguageDirectoryExists($language);
 
         $this
             ->withHeaders([
@@ -51,17 +42,6 @@ class LocalizeControllerTest extends TestCase
             ->json('DELETE', config('localize.path'))
             ->assertNoContent();
 
-        $this->assertFalse(File::exists(resource_path('lang/Language 1')));
-        $this->assertFalse(File::exists(resource_path('lang/Language 2')));
-    }
-
-    /**
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        Localize::clear();
-
-        parent::tearDown();
+        $this->assertLanguageDirectoryDoesNotExist($language);
     }
 }

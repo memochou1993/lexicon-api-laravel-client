@@ -17,7 +17,7 @@ class LocalizeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/localize.php', 'localize'
+            __DIR__.'/../config/localize.php', 'localize'
         );
 
         $this->app->singleton('localize', function() {
@@ -32,8 +32,12 @@ class LocalizeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (! defined('CONFIG_SEPARATOR')) {
+            define('CONFIG_SEPARATOR', '.');
+        }
+
         $this->publishes([
-            __DIR__ . '/../config/localize.php' => config_path('localize.php'),
+            __DIR__.'/../config/localize.php' => config_path('localize.php'),
         ]);
 
         if ($this->app->runningInConsole()) {

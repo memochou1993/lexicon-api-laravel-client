@@ -2,7 +2,6 @@
 
 namespace MemoChou1993\Localize\Tests\Console;
 
-use Illuminate\Support\Facades\File;
 use MemoChou1993\Localize\Facades\Localize;
 use MemoChou1993\Localize\Tests\TestCase;
 
@@ -11,22 +10,13 @@ class LocalizeCommandTest extends TestCase
     /**
      * @return void
      */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->prepare('project');
-    }
-
-    /**
-     * @return void
-     */
     public function testSync(): void
     {
         $this->artisan('localize:sync');
 
-        $this->assertTrue(File::exists(resource_path('lang/Language 1')));
-        $this->assertTrue(File::exists(resource_path('lang/Language 2')));
+        $language = Localize::getLanguages()->first();
+
+        $this->assertLanguageDirectoryExists($language);
     }
 
     /**
@@ -36,22 +26,12 @@ class LocalizeCommandTest extends TestCase
     {
         Localize::export();
 
-        $this->assertTrue(File::exists(resource_path('lang/Language 1')));
-        $this->assertTrue(File::exists(resource_path('lang/Language 2')));
+        $language = Localize::getLanguages()->first();
+
+        $this->assertLanguageDirectoryExists($language);
 
         $this->artisan('localize:clear');
 
-        $this->assertFalse(File::exists(resource_path('lang/Language 1')));
-        $this->assertFalse(File::exists(resource_path('lang/Language 2')));
-    }
-
-    /**
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        Localize::clear();
-
-        parent::tearDown();
+        $this->assertLanguageDirectoryDoesNotExist($language);
     }
 }

@@ -3,7 +3,6 @@
 namespace MemoChou1993\Localize\Tests;
 
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\File;
 use Illuminate\Translation\Translator;
 use MemoChou1993\Localize\Facades\Localize;
 
@@ -16,8 +15,6 @@ class LocalizeTest extends TestCase
     {
         parent::setUp();
 
-        File::ensureDirectoryExists(resource_path('lang/zh-TW'));
-
         $this->prepare('project');
     }
 
@@ -26,13 +23,7 @@ class LocalizeTest extends TestCase
      */
     public function testGetLanguages(): void
     {
-        $this->assertEquals(
-            [
-                'Language 1',
-                'Language 2',
-            ],
-            Localize::getLanguages()->toArray(),
-        );
+        $this->assertEquals('Language 1', Localize::getLanguages()->first());
     }
 
     /**
@@ -51,8 +42,8 @@ class LocalizeTest extends TestCase
     {
         Localize::only('Language 1')->export();
 
-        $this->assertTrue(File::exists(resource_path('lang/Language 1')));
-        $this->assertFalse(File::exists(resource_path('lang/Language 2')));
+        $this->assertLanguageDirectoryExists('Language 1');
+        $this->assertLanguageDirectoryDoesNotExist('Language 2');
     }
 
     /**
@@ -62,8 +53,8 @@ class LocalizeTest extends TestCase
     {
         Localize::except('Language 1')->export();
 
-        $this->assertFalse(File::exists(resource_path('lang/Language 1')));
-        $this->assertTrue(File::exists(resource_path('lang/Language 2')));
+        $this->assertLanguageDirectoryDoesNotExist('Language 1');
+        $this->assertLanguageDirectoryExists('Language 2');
     }
 
     /**
@@ -73,8 +64,8 @@ class LocalizeTest extends TestCase
     {
         Localize::export();
 
-        $this->assertTrue(File::exists(resource_path('lang/Language 1')));
-        $this->assertTrue(File::exists(resource_path('lang/Language 2')));
+        $this->assertLanguageDirectoryExists('Language 1');
+        $this->assertLanguageDirectoryExists('Language 2');
     }
 
     /**
@@ -84,13 +75,13 @@ class LocalizeTest extends TestCase
     {
         Localize::export();
 
-        $this->assertTrue(File::exists(resource_path('lang/Language 1')));
-        $this->assertTrue(File::exists(resource_path('lang/Language 2')));
+        $this->assertLanguageDirectoryExists('Language 1');
+        $this->assertLanguageDirectoryExists('Language 2');
 
         Localize::clear();
 
-        $this->assertFalse(File::exists(resource_path('lang/Language 1')));
-        $this->assertFalse(File::exists(resource_path('lang/Language 2')));
+        $this->assertLanguageDirectoryDoesNotExist('Language 1');
+        $this->assertLanguageDirectoryDoesNotExist('Language 2');
     }
 
     /**
@@ -100,9 +91,9 @@ class LocalizeTest extends TestCase
     {
         Localize::export();
 
-        $this->assertTrue(Localize::trans() === '');
-        $this->assertTrue(___() === null);
-        $this->assertTrue(localize() === app(Translator::class));
+        $this->assertSame('', Localize::trans());
+        $this->assertSame(null, ___());
+        $this->assertSame(app(Translator::class), localize());
 
         App::setLocale('Language 1');
         $this->assertEquals('Value 7', Localize::trans('Key 2'));
@@ -113,17 +104,5 @@ class LocalizeTest extends TestCase
         $this->assertEquals('Value 14', Localize::trans('Key 3'));
         $this->assertEquals('Value 14', ___('Key 3'));
         $this->assertEquals('Value 14', localize('Key 3'));
-    }
-
-    /**
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        Localize::clear();
-
-        $this->assertTrue(File::isDirectory(resource_path('lang/zh-TW')));
-
-        parent::tearDown();
     }
 }

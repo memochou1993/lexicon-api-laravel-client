@@ -223,10 +223,7 @@ class Localize
             PHP_EOL,
         ]);
 
-        $directory = vsprintf('%s/%s', [
-            resource_path('lang'),
-            $language,
-        ]);
+        $directory = lang_path($language);
 
         File::ensureDirectoryExists($directory);
 
@@ -243,7 +240,7 @@ class Localize
      */
     public function clear(): self
     {
-        $directories = File::directories(resource_path('lang'));
+        $directories = File::directories(lang_path());
 
         collect($directories)
             ->filter(function ($directory) {
@@ -269,7 +266,7 @@ class Localize
             return '';
         }
 
-        $key = sprintf('%s.%s', config('localize.filename'), $key);
+        $key = config('localize.filename').CONFIG_SEPARATOR.$key;
 
         return trans_choice($key, $number, $replace, $locale);
     }

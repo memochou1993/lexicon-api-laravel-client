@@ -1,5 +1,18 @@
 <?php
 
+if (! function_exists('lang_path')) {
+    /**
+     * Get the path to the language files.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function lang_path($path = '')
+    {
+        return app()->langPath().DIRECTORY_SEPARATOR.$path;
+    }
+}
+
 if (! function_exists('localize')) {
     /**
      * Translates the given message based on a count.
@@ -16,7 +29,7 @@ if (! function_exists('localize')) {
             return app('translator');
         }
 
-        $key = sprintf('%s.%s', config('localize.filename'), $key);
+        $key = $key = config('localize.filename').CONFIG_SEPARATOR.$key;
 
         return app('translator')->choice($key, $number, $replace, $locale);
     }
