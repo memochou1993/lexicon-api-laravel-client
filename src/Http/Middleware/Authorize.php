@@ -17,9 +17,9 @@ class Authorize
      */
     public function handle($request, $next)
     {
-        $secret_key = config('localize.secret_key');
+        $api_key = config('localize.api_key');
 
-        if (! ($request->header('X-Localize-Secret-Key') === $secret_key)) {
+        if (! ($request->bearerToken() === $api_key)) {
             abort(403);
         }
 

@@ -4,11 +4,9 @@ use MemoChou1993\Localize\Http\Middleware\Authorize;
 
 return [
 
-    'host' => env('LOCALIZE_HOST'),
+    'api_url' => env('LOCALIZE_API_URL'),
 
-    'project_id' => env('LOCALIZE_PROJECT_ID'),
-
-    'secret_key' => env('LOCALIZE_SECRET_KEY'),
+    'api_key' => env('LOCALIZE_API_KEY'),
 
     'path' => 'localize',
 

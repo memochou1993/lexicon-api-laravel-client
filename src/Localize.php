@@ -24,33 +24,17 @@ class Localize
     /**
      * @return string
      */
-    protected function host(): string
+    protected function apiUrl(): string
     {
-        return config('localize.host');
+        return config('localize.api_url');
     }
 
     /**
      * @return string
      */
-    protected function projectId(): string
+    protected function apiKey(): string
     {
-        return config('localize.project_id');
-    }
-
-    /**
-     * @return string
-     */
-    protected function url(): string
-    {
-        return '/api/client/projects/'.$this->projectId();
-    }
-
-    /**
-     * @return string
-     */
-    protected function secretKey(): string
-    {
-        return config('localize.secret_key');
+        return config('localize.api_key');
     }
 
     /**
@@ -67,7 +51,7 @@ class Localize
     protected function headers(): array
     {
         return [
-            'X-Localize-Secret-Key' => $this->secretKey(),
+            'Authorization' => sprintf('Bearer %s', $this->apiKey()),
         ];
     }
 
@@ -130,9 +114,9 @@ class Localize
     {
         try {
             $response = Http::retry(3, 500)
-                ->baseUrl($this->host())
+                ->baseUrl($this->apiUrl())
                 ->withHeaders($this->headers())
-                ->get($this->url())
+                ->get('/api/client/project')
                 ->throw();
 
             $data = json_decode($response->body(), true)['data'];

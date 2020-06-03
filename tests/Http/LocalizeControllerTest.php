@@ -15,7 +15,7 @@ class LocalizeControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->prepare('project');
+        $this->prepare('project'); // TODO: should be removed
     }
 
     /**
@@ -23,8 +23,11 @@ class LocalizeControllerTest extends TestCase
      */
     public function testSync(): void
     {
-        $this->withHeader('X-Localize-Secret-Key', 'secret')
-            ->get(config('localize.path'))
+        $this
+            ->withHeaders([
+                'Authorization' => sprintf('Bearer %s', config('localize.api_key')),
+            ])
+            ->json('GET', config('localize.path'))
             ->assertNoContent();
 
         $this->assertTrue(File::exists(resource_path('lang/Language 1')));
@@ -41,8 +44,11 @@ class LocalizeControllerTest extends TestCase
         $this->assertTrue(File::exists(resource_path('lang/Language 1')));
         $this->assertTrue(File::exists(resource_path('lang/Language 2')));
 
-        $this->withHeader('X-Localize-Secret-Key', 'secret')
-            ->delete(config('localize.path'))
+        $this
+            ->withHeaders([
+                'Authorization' => sprintf('Bearer %s', config('localize.api_key')),
+            ])
+            ->json('DELETE', config('localize.path'))
             ->assertNoContent();
 
         $this->assertFalse(File::exists(resource_path('lang/Language 1')));

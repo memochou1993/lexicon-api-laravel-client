@@ -16,8 +16,7 @@
     </filter>
     <php>
         <server name="APP_ENV" value="testing"/>
-        <server name="LOCALIZE_HOST" value=""/>
-        <server name="LOCALIZE_PROJECT_ID" value=""/>
-        <server name="LOCALIZE_SECRET_KEY" value="secret"/>
+        <server name="LOCALIZE_API_URL" value=""/> <!-- TODO: should be removed -->
+        <server name="LOCALIZE_API_KEY" value=""/> <!-- TODO: should be removed -->
     </php>
 </phpunit>
