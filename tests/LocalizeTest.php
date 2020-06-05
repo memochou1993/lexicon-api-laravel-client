@@ -11,6 +11,11 @@ use MemoChou1993\Localize\Localize;
 class LocalizeTest extends TestCase
 {
     /**
+     * @var Localize
+     */
+    private Localize $localize;
+
+    /**
      * @return void
      */
     protected function setUp(): void

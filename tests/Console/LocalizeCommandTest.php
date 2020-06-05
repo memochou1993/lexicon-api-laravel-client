@@ -34,4 +34,14 @@ class LocalizeCommandTest extends TestCase
 
         $this->assertLanguageDirectoryDoesNotExist($language);
     }
+
+    /**
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        Localize::clear();
+
+        parent::tearDown();
+    }
 }
