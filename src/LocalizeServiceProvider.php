@@ -20,8 +20,15 @@ class LocalizeServiceProvider extends ServiceProvider
             __DIR__.'/../config/localize.php', 'localize'
         );
 
+        $this->app->singleton(Client::class, function() {
+            return new Client([
+                'api_url' => config('localize.api_url'),
+                'api_key' => config('localize.api_key'),
+            ]);
+        });
+
         $this->app->singleton('localize', function() {
-            return new Localize();
+            return new Localize(app(Client::class));
         });
     }
 

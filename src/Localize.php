@@ -2,15 +2,19 @@
 
 namespace MemoChou1993\Localize;
 
-use Illuminate\Http\Client\RequestException;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Http;
 use Symfony\Component\VarExporter\Exception\ExceptionInterface;
 use Symfony\Component\VarExporter\VarExporter;
 
 class Localize
 {
+    /**
+     * @var Client
+     */
+    private Client $client;
+
     /**
      * @var array
      */
@@ -22,19 +26,11 @@ class Localize
     protected ?Collection $expectedLanguages = null;
 
     /**
-     * @return string
+     * @param Client $client
      */
-    protected function apiUrl(): string
+    public function __construct(Client $client)
     {
-        return config('localize.api_url');
-    }
-
-    /**
-     * @return string
-     */
-    protected function apiKey(): string
-    {
-        return config('localize.api_key');
+        $this->client = $client;
     }
 
     /**
@@ -43,16 +39,6 @@ class Localize
     protected function filename(): string
     {
         return config('localize.filename');
-    }
-
-    /**
-     * @return array
-     */
-    protected function headers(): array
-    {
-        return [
-            'Authorization' => sprintf('Bearer %s', $this->apiKey()),
-        ];
     }
 
     /**
@@ -113,13 +99,9 @@ class Localize
     protected function fetchProject()
     {
         try {
-            $response = Http::retry(3, 500)
-                ->baseUrl($this->apiUrl())
-                ->withHeaders($this->headers())
-                ->get('/api/client/project')
-                ->throw();
+            $response = $this->client->fetchProject();
 
-            $data = json_decode($response->body(), true)['data'];
+            $data = json_decode($response->getBody()->getContents(), true)['data'];
 
             $this->setProject($data);
 
@@ -266,7 +248,7 @@ class Localize
             return '';
         }
 
-        $key = config('localize.filename').CONFIG_SEPARATOR.$key;
+        $key = $this->filename().CONFIG_SEPARATOR.$key;
 
         return trans_choice($key, $number, $replace, $locale);
     }

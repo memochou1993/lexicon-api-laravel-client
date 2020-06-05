@@ -2,9 +2,11 @@
 
 namespace MemoChou1993\Localize\Tests;
 
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Translation\Translator;
-use MemoChou1993\Localize\Facades\Localize;
+use MemoChou1993\Localize\Client;
+use MemoChou1993\Localize\Localize;
 
 class LocalizeTest extends TestCase
 {
@@ -15,7 +17,22 @@ class LocalizeTest extends TestCase
     {
         parent::setUp();
 
-        $this->prepare('project');
+        $this->mockClient();
+    }
+
+    /**
+     * @return void
+     */
+    protected function mockClient(): void
+    {
+        $client = \Mockery::mock(Client::class);
+        $client->shouldReceive('fetchProject')
+            ->once()
+            ->andReturn(
+                new Response(200, [], file_get_contents(__DIR__.'/data/project.json'))
+            );
+
+        $this->localize = new Localize($client);
     }
 
     /**
@@ -23,7 +40,7 @@ class LocalizeTest extends TestCase
      */
     public function testGetLanguages(): void
     {
-        $this->assertEquals('Language 1', Localize::getLanguages()->first());
+        $this->assertEquals('Language 1', $this->localize->getLanguages()->first());
     }
 
     /**
@@ -31,8 +48,8 @@ class LocalizeTest extends TestCase
      */
     public function testHasLanguages(): void
     {
-        $this->assertTrue(Localize::hasLanguage('Language 1'));
-        $this->assertFalse(Localize::hasLanguage('Language 3'));
+        $this->assertTrue($this->localize->hasLanguage('Language 1'));
+        $this->assertFalse($this->localize->hasLanguage('Language 3'));
     }
 
     /**
@@ -40,7 +57,7 @@ class LocalizeTest extends TestCase
      */
     public function testExportOnly(): void
     {
-        Localize::only('Language 1')->export();
+        $this->localize->only('Language 1')->export();
 
         $this->assertLanguageDirectoryExists('Language 1');
         $this->assertLanguageDirectoryDoesNotExist('Language 2');
@@ -51,7 +68,7 @@ class LocalizeTest extends TestCase
      */
     public function testExportExcept(): void
     {
-        Localize::except('Language 1')->export();
+        $this->localize->except('Language 1')->export();
 
         $this->assertLanguageDirectoryDoesNotExist('Language 1');
         $this->assertLanguageDirectoryExists('Language 2');
@@ -62,7 +79,7 @@ class LocalizeTest extends TestCase
      */
     public function testExport(): void
     {
-        Localize::export();
+        $this->localize->export();
 
         $this->assertLanguageDirectoryExists('Language 1');
         $this->assertLanguageDirectoryExists('Language 2');
@@ -73,12 +90,12 @@ class LocalizeTest extends TestCase
      */
     public function testClear(): void
     {
-        Localize::export();
+        $this->localize->export();
 
         $this->assertLanguageDirectoryExists('Language 1');
         $this->assertLanguageDirectoryExists('Language 2');
 
-        Localize::clear();
+        $this->localize->clear();
 
         $this->assertLanguageDirectoryDoesNotExist('Language 1');
         $this->assertLanguageDirectoryDoesNotExist('Language 2');
@@ -89,20 +106,32 @@ class LocalizeTest extends TestCase
      */
     public function testTrans(): void
     {
-        Localize::export();
+        $this->localize->export();
 
-        $this->assertSame('', Localize::trans());
+        $this->assertSame('', $this->localize->trans());
         $this->assertSame(null, ___());
         $this->assertSame(app(Translator::class), localize());
 
         App::setLocale('Language 1');
-        $this->assertEquals('Value 7', Localize::trans('Key 2'));
+        $this->assertEquals('Value 7', $this->localize->trans('Key 2'));
         $this->assertEquals('Value 7', ___('Key 2'));
         $this->assertEquals('Value 7', localize('Key 2'));
 
         App::setLocale('Language 2');
-        $this->assertEquals('Value 14', Localize::trans('Key 3'));
+        $this->assertEquals('Value 14', $this->localize->trans('Key 3'));
         $this->assertEquals('Value 14', ___('Key 3'));
         $this->assertEquals('Value 14', localize('Key 3'));
+    }
+
+    /**
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->localize->clear();
+
+        \Mockery::close();
+
+        parent::tearDown();
     }
 }
