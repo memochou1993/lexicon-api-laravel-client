@@ -8,7 +8,7 @@ return [
 
     'api_key' => env('LOCALIZE_API_KEY'),
 
-    'path' => 'localize',
+    'path' => 'api/localize',
 
     'middleware' => [
         Authorize::class,
