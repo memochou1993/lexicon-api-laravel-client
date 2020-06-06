@@ -18,7 +18,7 @@
         "symfony/var-exporter": "^5.0",
         "guzzlehttp/guzzle": "^6.5",
         "illuminate/support": "^7.0",
-        "memochou1993/localize-client-php": "dev-master"
+        "memochou1993/localize-client-php": "v0.1.4"
     },
     "require-dev": {
         "orchestra/testbench": "^5.3"
