@@ -2,4 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::post('receive', 'EventController@receive');
+Route::post('/', 'EventController@index');

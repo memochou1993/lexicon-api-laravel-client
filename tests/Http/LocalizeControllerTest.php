@@ -16,7 +16,7 @@ class LocalizeControllerTest extends TestCase
             ->withHeaders([
                 'Authorization' => 'Bearer '.config('localize.api_key'),
             ])
-            ->json('POST', config('localize.path').'/receive', [
+            ->json('POST', config('localize.path'), [
                 'events' => [
                     'sync',
                 ],

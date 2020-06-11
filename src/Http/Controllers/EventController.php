@@ -25,7 +25,7 @@ class EventController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function receive(Request $request)
+    public function index(Request $request)
     {
         collect($request->input('events'))
             ->intersect($this->events)
