@@ -39,7 +39,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "MemoChou1993\\Localize\\LocalizeServiceProvider"
+                "MemoChou1993\\Localize\\Providers\\LocalizeServiceProvider"
             ],
             "aliases": {
                 "Localize": "MemoChou1993\\Localize\\Facades\\Localize"
