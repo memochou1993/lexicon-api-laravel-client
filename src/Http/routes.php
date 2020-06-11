@@ -2,5 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'LocalizeController@sync');
-Route::delete('/', 'LocalizeController@clear');
+Route::post('receive', 'EventController@receive');

@@ -14,35 +14,18 @@ class LocalizeControllerTest extends TestCase
     {
         $this
             ->withHeaders([
-                'Authorization' => sprintf('Bearer %s', config('localize.api_key')),
+                'Authorization' => 'Bearer '.config('localize.api_key'),
             ])
-            ->json('GET', config('localize.path'))
+            ->json('POST', config('localize.path').'/receive', [
+                'events' => [
+                    'sync',
+                ],
+            ])
             ->assertNoContent();
 
         $language = Localize::getLanguages()->first();
 
         $this->assertLanguageDirectoryExists($language);
-    }
-
-    /**
-     * @return void
-     */
-    public function testClear(): void
-    {
-        Localize::export();
-
-        $language = Localize::getLanguages()->first();
-
-        $this->assertLanguageDirectoryExists($language);
-
-        $this
-            ->withHeaders([
-                'Authorization' => sprintf('Bearer %s', config('localize.api_key')),
-            ])
-            ->json('DELETE', config('localize.path'))
-            ->assertNoContent();
-
-        $this->assertLanguageDirectoryDoesNotExist($language);
     }
 
     /**

@@ -5,7 +5,7 @@ namespace MemoChou1993\Localize\Tests;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\File;
 use MemoChou1993\Localize\Localize;
-use MemoChou1993\Localize\LocalizeServiceProvider;
+use MemoChou1993\Localize\Providers\LocalizeServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase

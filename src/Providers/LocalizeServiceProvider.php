@@ -1,11 +1,13 @@
 <?php
 
-namespace MemoChou1993\Localize;
+namespace MemoChou1993\Localize\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use MemoChou1993\Localize\Client;
 use MemoChou1993\Localize\Console\ClearCommand;
 use MemoChou1993\Localize\Console\SyncCommand;
+use MemoChou1993\Localize\Localize;
 
 class LocalizeServiceProvider extends ServiceProvider
 {
@@ -17,7 +19,8 @@ class LocalizeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/localize.php', 'localize'
+            __DIR__.'/../../config/localize.php',
+            'localize'
         );
 
         $this->app->singleton(Client::class, function() {
@@ -30,6 +33,8 @@ class LocalizeServiceProvider extends ServiceProvider
         $this->app->singleton('localize', function() {
             return new Localize(app(Client::class));
         });
+
+        $this->app->register(EventServiceProvider::class);
     }
 
     /**
@@ -44,7 +49,7 @@ class LocalizeServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__.'/../config/localize.php' => config_path('localize.php'),
+            __DIR__.'/../../config/localize.php' => config_path('localize.php'),
         ]);
 
         if ($this->app->runningInConsole()) {
@@ -59,7 +64,7 @@ class LocalizeServiceProvider extends ServiceProvider
             'prefix' => config('localize.path'),
             'middleware' => config('localize.middleware', []),
         ], function () {
-            $this->loadRoutesFrom(__DIR__.'/Http/routes.php');
+            $this->loadRoutesFrom(__DIR__.'/../Http/routes.php');
         });
     }
 }
