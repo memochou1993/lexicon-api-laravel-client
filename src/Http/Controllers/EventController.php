@@ -20,7 +20,7 @@ class EventController extends Controller
     ];
 
     /**
-     * Export language resources.
+     * Receive and dispatch events.
      *
      * @param Request $request
      * @return JsonResponse
@@ -29,10 +29,8 @@ class EventController extends Controller
     {
         collect($request->input('events'))
             ->intersect($this->events)
-            ->each(function ($event) {
-                Event::dispatch($event);
-            });
+            ->each(fn($event) => Event::dispatch($event));
 
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+        return response()->json(null, Response::HTTP_ACCEPTED);
     }
 }

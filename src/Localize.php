@@ -226,6 +226,14 @@ class Localize
                 $path = sprintf('%s/%s.php', $directory, $this->filename());
 
                 File::delete($path);
+
+                return $directory;
+            })
+            ->reject(function ($directory) {
+                return count(File::allFiles($directory)) > 0;
+            })
+            ->each(function ($directory) {
+                File::deleteDirectory($directory);
             });
 
         return $this;

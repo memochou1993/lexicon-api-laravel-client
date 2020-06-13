@@ -5,7 +5,7 @@ namespace MemoChou1993\Localize\Tests\Console;
 use MemoChou1993\Localize\Facades\Localize;
 use MemoChou1993\Localize\Tests\TestCase;
 
-class LocalizeCommandTest extends TestCase
+class CommandTest extends TestCase
 {
     /**
      * @return void

@@ -5,7 +5,7 @@ namespace MemoChou1993\Localize\Tests\Http;
 use MemoChou1993\Localize\Facades\Localize;
 use MemoChou1993\Localize\Tests\TestCase;
 
-class LocalizeControllerTest extends TestCase
+class EventControllerTest extends TestCase
 {
     /**
      * @return void
