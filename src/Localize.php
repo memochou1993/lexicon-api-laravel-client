@@ -138,12 +138,9 @@ class Localize
                 return $value['language']['name'] === $language;
             })
             ->map(function ($value) {
-                return vsprintf('%s%s%s%s%s%s', [
-                    '[',
+                return vsprintf('[%s,%s]%s', [
                     $value['form']['range_min'],
-                    ',',
                     $value['form']['range_max'],
-                    ']',
                     $value['text'],
                 ]);
             })
@@ -209,12 +206,9 @@ class Localize
 
         File::ensureDirectoryExists($directory);
 
-        $filename = vsprintf('%s/%s.php', [
-            $directory,
-            $this->filename(),
-        ]);
+        $path = sprintf('%s/%s.php', $directory, $this->filename());
 
-        file_put_contents($filename, $data);
+        file_put_contents($path, $data);
     }
 
     /**
@@ -224,14 +218,14 @@ class Localize
     {
         $directories = File::directories(lang_path());
 
-        // TODO: only localize file should be removed
-
         collect($directories)
             ->filter(function ($directory) {
                 return $this->hasLanguage(basename($directory));
             })
             ->each(function ($directory) {
-                File::deleteDirectory($directory);
+                $path = sprintf('%s/%s.php', $directory, $this->filename());
+
+                File::delete($path);
             });
 
         return $this;

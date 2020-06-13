@@ -16,7 +16,7 @@ class LocalizeCommandTest extends TestCase
 
         $language = Localize::getLanguages()->first();
 
-        $this->assertLanguageDirectoryExists($language);
+        $this->assertLanguageFileExists($language);
     }
 
     /**
@@ -28,11 +28,11 @@ class LocalizeCommandTest extends TestCase
 
         $language = Localize::getLanguages()->first();
 
-        $this->assertLanguageDirectoryExists($language);
+        $this->assertLanguageFileExists($language);
 
         $this->artisan('localize:clear');
 
-        $this->assertLanguageDirectoryDoesNotExist($language);
+        $this->assertLanguageFileDoesNotExist($language);
     }
 
     /**

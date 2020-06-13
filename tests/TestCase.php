@@ -46,18 +46,22 @@ class TestCase extends OrchestraTestCase
      * @param string $language
      * @return void
      */
-    protected function assertLanguageDirectoryExists(string $language): void
+    protected function assertLanguageFileExists(string $language): void
     {
-        $this->assertDirectoryExists(lang_path($language));
+        $path = sprintf('%s/%s.php', $language, config('localize.filename'));
+
+        $this->assertFileExists(lang_path($path));
     }
 
     /**
      * @param string $language
      * @return void
      */
-    protected function assertLanguageDirectoryDoesNotExist(string $language): void
+    protected function assertLanguageFileDoesNotExist(string $language): void
     {
-        $this->assertDirectoryDoesNotExist(lang_path($language));
+        $path = sprintf('%s/%s.php', $language, config('localize.filename'));
+
+        $this->assertFileDoesNotExist(lang_path($path));
     }
 
     /**

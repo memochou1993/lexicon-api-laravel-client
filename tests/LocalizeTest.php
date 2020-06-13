@@ -67,8 +67,8 @@ class LocalizeTest extends TestCase
     {
         $this->localize->only('Language 1')->export();
 
-        $this->assertLanguageDirectoryExists('Language 1');
-        $this->assertLanguageDirectoryDoesNotExist('Language 2');
+        $this->assertLanguageFileExists('Language 1');
+        $this->assertLanguageFileDoesNotExist('Language 2');
     }
 
     /**
@@ -78,8 +78,8 @@ class LocalizeTest extends TestCase
     {
         $this->localize->except('Language 1')->export();
 
-        $this->assertLanguageDirectoryDoesNotExist('Language 1');
-        $this->assertLanguageDirectoryExists('Language 2');
+        $this->assertLanguageFileDoesNotExist('Language 1');
+        $this->assertLanguageFileExists('Language 2');
     }
 
     /**
@@ -89,8 +89,8 @@ class LocalizeTest extends TestCase
     {
         $this->localize->export();
 
-        $this->assertLanguageDirectoryExists('Language 1');
-        $this->assertLanguageDirectoryExists('Language 2');
+        $this->assertLanguageFileExists('Language 1');
+        $this->assertLanguageFileExists('Language 2');
     }
 
     /**
@@ -100,13 +100,13 @@ class LocalizeTest extends TestCase
     {
         $this->localize->export();
 
-        $this->assertLanguageDirectoryExists('Language 1');
-        $this->assertLanguageDirectoryExists('Language 2');
+        $this->assertLanguageFileExists('Language 1');
+        $this->assertLanguageFileExists('Language 2');
 
         $this->localize->clear();
 
-        $this->assertLanguageDirectoryDoesNotExist('Language 1');
-        $this->assertLanguageDirectoryDoesNotExist('Language 2');
+        $this->assertLanguageFileDoesNotExist('Language 1');
+        $this->assertLanguageFileDoesNotExist('Language 2');
     }
 
     /**
@@ -137,8 +137,6 @@ class LocalizeTest extends TestCase
     protected function tearDown(): void
     {
         $this->localize->clear();
-
-        \Mockery::close();
 
         parent::tearDown();
     }

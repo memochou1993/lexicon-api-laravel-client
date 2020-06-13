@@ -24,7 +24,7 @@ class LocalizeControllerTest extends TestCase
 
         $language = Localize::getLanguages()->first();
 
-        $this->assertLanguageDirectoryExists($language);
+        $this->assertLanguageFileExists($language);
     }
 
     /**

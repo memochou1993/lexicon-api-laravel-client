@@ -29,7 +29,7 @@ if (! function_exists('localize')) {
             return app('translator');
         }
 
-        $key = $key = config('localize.filename').CONFIG_SEPARATOR.$key;
+        $key = config('localize.filename').CONFIG_SEPARATOR.$key;
 
         return app('translator')->choice($key, $number, $replace, $locale);
     }
