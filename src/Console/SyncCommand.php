@@ -4,6 +4,7 @@ namespace MemoChou1993\Localize\Console;
 
 use Illuminate\Console\Command;
 use MemoChou1993\Localize\Facades\Localize;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SyncCommand extends Command
 {
@@ -34,10 +35,18 @@ class SyncCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
     public function handle()
     {
-        Localize::export();
+        try {
+            Localize::export();
+        } catch (HttpException $e) {
+            $this->error($e->getMessage());
+
+            return 0;
+        }
+
+        return 1;
     }
 }

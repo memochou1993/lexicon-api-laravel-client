@@ -4,6 +4,7 @@ namespace MemoChou1993\Localize\Console;
 
 use Illuminate\Console\Command;
 use MemoChou1993\Localize\Facades\Localize;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ClearCommand extends Command
 {
@@ -34,10 +35,18 @@ class ClearCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
     public function handle()
     {
-        Localize::clear();
+        try {
+            Localize::clear();
+        } catch (HttpException $e) {
+            $this->error($e->getMessage());
+
+            return 0;
+        }
+
+        return 1;
     }
 }

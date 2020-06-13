@@ -12,7 +12,9 @@ class CommandTest extends TestCase
      */
     public function testSync(): void
     {
-        $this->artisan('localize:sync');
+        $this
+            ->artisan('localize:sync')
+            ->assertExitCode(1);
 
         $language = Localize::getLanguages()->first();
 
@@ -30,7 +32,9 @@ class CommandTest extends TestCase
 
         $this->assertLanguageFileExists($language);
 
-        $this->artisan('localize:clear');
+        $this
+            ->artisan('localize:clear')
+            ->assertExitCode(1);
 
         $this->assertLanguageDirectoryDoesNotExist($language);
     }
