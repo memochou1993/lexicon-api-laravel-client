@@ -224,6 +224,8 @@ class Localize
     {
         $directories = File::directories(lang_path());
 
+        // TODO: only localize file should be removed
+
         collect($directories)
             ->filter(function ($directory) {
                 return $this->hasLanguage(basename($directory));

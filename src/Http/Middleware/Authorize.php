@@ -3,6 +3,7 @@
 namespace MemoChou1993\Localize\Http\Middleware;
 
 use Closure;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -14,13 +15,14 @@ class Authorize
      * @param  Request  $request
      * @param  Closure  $next
      * @return Response
+     * @throws AuthenticationException
      */
     public function handle($request, $next)
     {
-        $api_key = config('localize.api_key');
+        $apiKey = config('localize.api_key');
 
-        if (! ($request->bearerToken() === $api_key)) {
-            abort(403);
+        if (! ($request->header('X-Localize-API-Key') === $apiKey)) {
+            throw new AuthenticationException();
         }
 
         return $next($request);

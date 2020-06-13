@@ -12,11 +12,10 @@ class LocalizeControllerTest extends TestCase
      */
     public function testSync(): void
     {
-        $this
-            ->withHeaders([
-                'Authorization' => 'Bearer '.config('localize.api_key'),
+        $this->withHeaders([
+                'X-Localize-API-Key' => config('localize.api_key'),
             ])
-            ->json('POST', config('localize.path'), [
+            ->json('POST', '/api/'.config('localize.path'), [
                 'events' => [
                     'sync',
                 ],

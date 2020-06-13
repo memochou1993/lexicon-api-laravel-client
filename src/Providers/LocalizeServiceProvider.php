@@ -25,7 +25,8 @@ class LocalizeServiceProvider extends ServiceProvider
 
         $this->app->singleton(Client::class, function() {
             return new Client([
-                'api_url' => config('localize.api_url'),
+                'host' => config('localize.host'),
+                'project_id' => config('localize.project_id'),
                 'api_key' => config('localize.api_key'),
             ]);
         });
@@ -61,7 +62,7 @@ class LocalizeServiceProvider extends ServiceProvider
 
         Route::group([
             'namespace' => 'MemoChou1993\Localize\Http\Controllers',
-            'prefix' => config('localize.path'),
+            'prefix' => '/api/'.config('localize.path'),
             'middleware' => config('localize.middleware', []),
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../Http/routes.php');

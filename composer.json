@@ -15,10 +15,10 @@
     "require": {
         "php": "^7.4",
         "ext-json": "*",
+        "laravel/framework": "^7.0",
         "symfony/var-exporter": "^5.0",
         "guzzlehttp/guzzle": "^6.5",
-        "illuminate/support": "^7.0",
-        "memochou1993/localize-client-php": "v0.1.4"
+        "memochou1993/localize-client-php": "v0.1.6"
     },
     "require-dev": {
         "orchestra/testbench": "^5.3"

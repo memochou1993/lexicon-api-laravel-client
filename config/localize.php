@@ -4,11 +4,13 @@ use MemoChou1993\Localize\Http\Middleware\Authorize;
 
 return [
 
-    'api_url' => env('LOCALIZE_API_URL'),
+    'host' => env('LOCALIZE_HOST'),
+
+    'project_id' => env('LOCALIZE_PROJECT_ID'),
 
     'api_key' => env('LOCALIZE_API_KEY'),
 
-    'path' => 'api/localize',
+    'path' => 'localize',
 
     'middleware' => [
         Authorize::class,
