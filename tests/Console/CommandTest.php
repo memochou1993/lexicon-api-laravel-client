@@ -32,16 +32,6 @@ class CommandTest extends TestCase
 
         $this->artisan('localize:clear');
 
-        $this->assertLanguageFileDoesNotExist($language);
-    }
-
-    /**
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        Localize::clear();
-
-        parent::tearDown();
+        $this->assertLanguageDirectoryDoesNotExist($language);
     }
 }

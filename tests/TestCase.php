@@ -11,16 +11,6 @@ use Orchestra\Testbench\TestCase as OrchestraTestCase;
 class TestCase extends OrchestraTestCase
 {
     /**
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        File::ensureDirectoryExists(lang_path('zh-TW'));
-    }
-
-    /**
      * @param Application $app
      * @return array
      */
@@ -65,11 +55,20 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
+     * @param string $language
+     * @return void
+     */
+    protected function assertLanguageDirectoryDoesNotExist(string $language): void
+    {
+        $this->assertDirectoryDoesNotExist(lang_path($language));
+    }
+
+    /**
      * @return void
      */
     protected function tearDown(): void
     {
-        $this->assertTrue(File::isDirectory(lang_path('zh-TW')));
+        File::cleanDirectory(lang_path());
 
         parent::tearDown();
     }

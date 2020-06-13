@@ -4,6 +4,7 @@ namespace MemoChou1993\Localize\Tests;
 
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\File;
 use Illuminate\Translation\Translator;
 use MemoChou1993\Localize\Client;
 use MemoChou1993\Localize\Localize;
@@ -34,7 +35,8 @@ class LocalizeTest extends TestCase
         /** @var Client|MockObject $client */
         $client = $this->getMockBuilder(Client::class)->getMock();
 
-        $client->expects($this->once())
+        $client
+            ->expects($this->once())
             ->method('fetchProject')
             ->willReturn(
                 new Response(200, [], file_get_contents(__DIR__.'/data/project.json'))
@@ -54,7 +56,7 @@ class LocalizeTest extends TestCase
     /**
      * @return void
      */
-    public function testHasLanguages(): void
+    public function testHasLanguage(): void
     {
         $this->assertTrue($this->localize->hasLanguage('Language 1'));
         $this->assertFalse($this->localize->hasLanguage('Language 3'));
@@ -105,8 +107,34 @@ class LocalizeTest extends TestCase
 
         $this->localize->clear();
 
-        $this->assertLanguageFileDoesNotExist('Language 1');
-        $this->assertLanguageFileDoesNotExist('Language 2');
+        $this->assertLanguageDirectoryDoesNotExist('Language 1');
+        $this->assertLanguageDirectoryDoesNotExist('Language 2');
+    }
+
+    /**
+     * @return void
+     */
+    public function testDefaultFileExists(): void
+    {
+        File::ensureDirectoryExists(lang_path('Language 1'));
+
+        File::put(lang_path('Language 1/default.php'), null);
+
+        $this->localize->clear();
+
+        $this->assertFileExists(lang_path('Language 1/default.php'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testDefaultDirectoryExists(): void
+    {
+        File::ensureDirectoryExists(lang_path('zh-TW'));
+
+        $this->localize->clear();
+
+        $this->assertDirectoryExists(lang_path('zh-TW'));
     }
 
     /**
@@ -129,15 +157,5 @@ class LocalizeTest extends TestCase
         $this->assertEquals('Value 14', $this->localize->trans('Key 3'));
         $this->assertEquals('Value 14', ___('Key 3'));
         $this->assertEquals('Value 14', localize('Key 3'));
-    }
-
-    /**
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        $this->localize->clear();
-
-        parent::tearDown();
     }
 }

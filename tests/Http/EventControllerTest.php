@@ -13,7 +13,8 @@ class EventControllerTest extends TestCase
      */
     public function testSync(): void
     {
-        $this->withHeaders([
+        $this
+            ->withHeaders([
                 'X-Localize-API-Key' => config('localize.api_key'),
             ])
             ->json('POST', '/api/'.config('localize.path'), [
@@ -26,15 +27,5 @@ class EventControllerTest extends TestCase
         $language = Localize::getLanguages()->first();
 
         $this->assertLanguageFileExists($language);
-    }
-
-    /**
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        Localize::clear();
-
-        parent::tearDown();
     }
 }
