@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Translation\Translator;
 use MemoChou1993\Localize\Client;
 use MemoChou1993\Localize\Localize;
-use PHPUnit\Framework\MockObject\MockObject;
+use Mockery\MockInterface;
 
 class LocalizeTest extends TestCase
 {
@@ -24,25 +24,17 @@ class LocalizeTest extends TestCase
     {
         parent::setUp();
 
-        $this->mockClient();
-    }
+        $this->mock(Client::class, function ($mock) {
+            /** @var MockInterface $mock */
+            $mock
+                ->shouldReceive('fetchProject')
+                ->once()
+                ->andReturn(
+                    new Response(200, [], file_get_contents(__DIR__.'/data/project.json'))
+                );
+        });
 
-    /**
-     * @return void
-     */
-    protected function mockClient(): void
-    {
-        /** @var Client|MockObject $client */
-        $client = $this->getMockBuilder(Client::class)->getMock();
-
-        $client
-            ->expects($this->once())
-            ->method('fetchProject')
-            ->willReturn(
-                new Response(200, [], file_get_contents(__DIR__.'/data/project.json'))
-            );
-
-        $this->localize = new Localize($client);
+        $this->localize = app(Localize::class);
     }
 
     /**
