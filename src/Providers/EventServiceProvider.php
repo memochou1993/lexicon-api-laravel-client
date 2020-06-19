@@ -1,9 +1,9 @@
 <?php
 
-namespace MemoChou1993\Localize\Providers;
+namespace MemoChou1993\Lexicon\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use MemoChou1993\Localize\Listeners\Sync;
+use MemoChou1993\Lexicon\Listeners\Sync;
 
 class EventServiceProvider extends ServiceProvider
 {

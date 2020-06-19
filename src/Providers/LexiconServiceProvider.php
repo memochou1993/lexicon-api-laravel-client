@@ -1,15 +1,15 @@
 <?php
 
-namespace MemoChou1993\Localize\Providers;
+namespace MemoChou1993\Lexicon\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use MemoChou1993\Localize\Client;
-use MemoChou1993\Localize\Console\ClearCommand;
-use MemoChou1993\Localize\Console\SyncCommand;
-use MemoChou1993\Localize\Localize;
+use MemoChou1993\Lexicon\Client;
+use MemoChou1993\Lexicon\Console\ClearCommand;
+use MemoChou1993\Lexicon\Console\SyncCommand;
+use MemoChou1993\Lexicon\Lexicon;
 
-class LocalizeServiceProvider extends ServiceProvider
+class LexiconServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -19,20 +19,20 @@ class LocalizeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../../config/localize.php',
-            'localize'
+            __DIR__.'/../../config/lexicon.php',
+            'lexicon'
         );
 
         $this->app->singleton(Client::class, function() {
             return new Client([
-                'host' => config('localize.host'),
-                'project_id' => config('localize.project_id'),
-                'api_key' => config('localize.api_key'),
+                'host' => config('lexicon.host'),
+                'project_id' => config('lexicon.project_id'),
+                'api_key' => config('lexicon.api_key'),
             ]);
         });
 
-        $this->app->singleton('localize', function() {
-            return new Localize(app(Client::class));
+        $this->app->singleton('lexicon', function() {
+            return new Lexicon(app(Client::class));
         });
 
         $this->app->register(EventServiceProvider::class);
@@ -50,7 +50,7 @@ class LocalizeServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__.'/../../config/localize.php' => config_path('localize.php'),
+            __DIR__.'/../../config/lexicon.php' => config_path('lexicon.php'),
         ]);
 
         if ($this->app->runningInConsole()) {
@@ -61,9 +61,9 @@ class LocalizeServiceProvider extends ServiceProvider
         }
 
         Route::group([
-            'namespace' => 'MemoChou1993\Localize\Http\Controllers',
-            'prefix' => '/api/'.config('localize.path'),
-            'middleware' => config('localize.middleware', []),
+            'namespace' => 'MemoChou1993\Lexicon\Http\Controllers',
+            'prefix' => '/api/'.config('lexicon.path'),
+            'middleware' => config('lexicon.middleware', []),
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../Http/routes.php');
         });

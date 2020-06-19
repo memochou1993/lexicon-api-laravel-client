@@ -1,6 +1,6 @@
 {
-    "name": "memochou1993/localize-client-laravel",
-    "description": "Localize API client for Laravel",
+    "name": "memochou1993/lexicon-client-laravel",
+    "description": "Lexicon API client for Laravel",
     "type": "library",
     "keywords": [
         "localization"
@@ -18,14 +18,14 @@
         "laravel/framework": "^7.0",
         "symfony/var-exporter": "^5.0",
         "guzzlehttp/guzzle": "^6.5",
-        "memochou1993/localize-client-php": "v0.1.6"
+        "memochou1993/lexicon-client-php": "v0.1.7"
     },
     "require-dev": {
         "orchestra/testbench": "^5.3"
     },
     "autoload": {
         "psr-4": {
-            "MemoChou1993\\Localize\\": "src/"
+            "MemoChou1993\\Lexicon\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -33,16 +33,16 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "MemoChou1993\\Localize\\Tests\\": "tests/"
+            "MemoChou1993\\Lexicon\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "MemoChou1993\\Localize\\Providers\\LocalizeServiceProvider"
+                "MemoChou1993\\Lexicon\\Providers\\LexiconServiceProvider"
             ],
             "aliases": {
-                "Localize": "MemoChou1993\\Localize\\Facades\\Localize"
+                "Lexicon": "MemoChou1993\\Lexicon\\Facades\\Lexicon"
             }
         }
     }

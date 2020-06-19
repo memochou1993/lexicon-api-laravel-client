@@ -1,9 +1,9 @@
 <?php
 
-namespace MemoChou1993\Localize\Console;
+namespace MemoChou1993\Lexicon\Console;
 
 use Illuminate\Console\Command;
-use MemoChou1993\Localize\Facades\Localize;
+use MemoChou1993\Lexicon\Facades\Lexicon;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ClearCommand extends Command
@@ -13,7 +13,7 @@ class ClearCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'localize:clear';
+    protected $signature = 'lexicon:clear';
 
     /**
      * The console command description.
@@ -40,7 +40,7 @@ class ClearCommand extends Command
     public function handle()
     {
         try {
-            Localize::clear();
+            Lexicon::clear();
         } catch (HttpException $e) {
             $this->error($e->getMessage());
 

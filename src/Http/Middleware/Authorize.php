@@ -1,6 +1,6 @@
 <?php
 
-namespace MemoChou1993\Localize\Http\Middleware;
+namespace MemoChou1993\Lexicon\Http\Middleware;
 
 use Closure;
 use Illuminate\Auth\AuthenticationException;
@@ -19,9 +19,9 @@ class Authorize
      */
     public function handle($request, $next)
     {
-        $apiKey = config('localize.api_key');
+        $apiKey = config('lexicon.api_key');
 
-        if (! ($request->header('X-Localize-API-Key') === $apiKey)) {
+        if (! ($request->header('X-Lexicon-API-Key') === $apiKey)) {
             throw new AuthenticationException();
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace MemoChou1993\Localize;
+namespace MemoChou1993\Lexicon;
 
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Collection;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 use Symfony\Component\VarExporter\Exception\ExceptionInterface;
 use Symfony\Component\VarExporter\VarExporter;
 
-class Localize
+class Lexicon
 {
     /**
      * @var Client
@@ -38,7 +38,7 @@ class Localize
      */
     protected function filename(): string
     {
-        return config('localize.filename');
+        return config('lexicon.filename');
     }
 
     /**

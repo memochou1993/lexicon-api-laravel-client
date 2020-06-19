@@ -1,9 +1,9 @@
 <?php
 
-namespace MemoChou1993\Localize\Tests\Console;
+namespace MemoChou1993\Lexicon\Tests\Console;
 
-use MemoChou1993\Localize\Facades\Localize;
-use MemoChou1993\Localize\Tests\TestCase;
+use MemoChou1993\Lexicon\Facades\Lexicon;
+use MemoChou1993\Lexicon\Tests\TestCase;
 
 class CommandTest extends TestCase
 {
@@ -13,10 +13,10 @@ class CommandTest extends TestCase
     public function testSync(): void
     {
         $this
-            ->artisan('localize:sync')
+            ->artisan('lexicon:sync')
             ->assertExitCode(1);
 
-        $language = Localize::getLanguages()->first();
+        $language = Lexicon::getLanguages()->first();
 
         $this->assertLanguageFileExists($language);
     }
@@ -26,14 +26,14 @@ class CommandTest extends TestCase
      */
     public function testClear(): void
     {
-        Localize::export();
+        Lexicon::export();
 
-        $language = Localize::getLanguages()->first();
+        $language = Lexicon::getLanguages()->first();
 
         $this->assertLanguageFileExists($language);
 
         $this
-            ->artisan('localize:clear')
+            ->artisan('lexicon:clear')
             ->assertExitCode(1);
 
         $this->assertLanguageDirectoryDoesNotExist($language);

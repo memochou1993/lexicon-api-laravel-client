@@ -1,6 +1,6 @@
 <?php
 
-namespace MemoChou1993\Localize\Http\Controllers;
+namespace MemoChou1993\Lexicon\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

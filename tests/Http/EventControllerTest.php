@@ -1,9 +1,9 @@
 <?php
 
-namespace MemoChou1993\Localize\Tests\Http;
+namespace MemoChou1993\Lexicon\Tests\Http;
 
-use MemoChou1993\Localize\Facades\Localize;
-use MemoChou1993\Localize\Tests\TestCase;
+use MemoChou1993\Lexicon\Facades\Lexicon;
+use MemoChou1993\Lexicon\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class EventControllerTest extends TestCase
@@ -15,16 +15,16 @@ class EventControllerTest extends TestCase
     {
         $this
             ->withHeaders([
-                'X-Localize-API-Key' => config('localize.api_key'),
+                'X-Lexicon-API-Key' => config('lexicon.api_key'),
             ])
-            ->json('POST', '/api/'.config('localize.path'), [
+            ->json('POST', '/api/'.config('lexicon.path'), [
                 'events' => [
                     'sync',
                 ],
             ])
             ->assertStatus(Response::HTTP_ACCEPTED);
 
-        $language = Localize::getLanguages()->first();
+        $language = Lexicon::getLanguages()->first();
 
         $this->assertLanguageFileExists($language);
     }

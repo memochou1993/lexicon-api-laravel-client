@@ -1,11 +1,11 @@
 <?php
 
-namespace MemoChou1993\Localize\Tests;
+namespace MemoChou1993\Lexicon\Tests;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\File;
-use MemoChou1993\Localize\Localize;
-use MemoChou1993\Localize\Providers\LocalizeServiceProvider;
+use MemoChou1993\Lexicon\Lexicon;
+use MemoChou1993\Lexicon\Providers\LexiconServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
@@ -17,7 +17,7 @@ class TestCase extends OrchestraTestCase
     protected function getPackageProviders($app)
     {
         return [
-            LocalizeServiceProvider::class,
+            LexiconServiceProvider::class,
         ];
     }
 
@@ -28,7 +28,7 @@ class TestCase extends OrchestraTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'localize' => Localize::class,
+            'lexicon' => Lexicon::class,
         ];
     }
 
@@ -38,7 +38,7 @@ class TestCase extends OrchestraTestCase
      */
     protected function assertLanguageFileExists(string $language): void
     {
-        $path = sprintf('%s/%s.php', $language, config('localize.filename'));
+        $path = sprintf('%s/%s.php', $language, config('lexicon.filename'));
 
         $this->assertFileExists(lang_path($path));
     }
@@ -49,7 +49,7 @@ class TestCase extends OrchestraTestCase
      */
     protected function assertLanguageFileDoesNotExist(string $language): void
     {
-        $path = sprintf('%s/%s.php', $language, config('localize.filename'));
+        $path = sprintf('%s/%s.php', $language, config('lexicon.filename'));
 
         $this->assertFileDoesNotExist(lang_path($path));
     }

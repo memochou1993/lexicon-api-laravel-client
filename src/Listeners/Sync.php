@@ -1,8 +1,8 @@
 <?php
 
-namespace MemoChou1993\Localize\Listeners;
+namespace MemoChou1993\Lexicon\Listeners;
 
-use MemoChou1993\Localize\Facades\Localize;
+use MemoChou1993\Lexicon\Facades\Lexicon;
 
 class Sync
 {
@@ -23,6 +23,6 @@ class Sync
      */
     public function handle()
     {
-        Localize::clear()->export();
+        Lexicon::clear()->export();
     }
 }
