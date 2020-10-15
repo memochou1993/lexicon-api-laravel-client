@@ -15,13 +15,13 @@
     "require": {
         "php": "^7.4",
         "ext-json": "*",
-        "laravel/framework": "^7.0",
+        "laravel/framework": "^8.0",
         "symfony/var-exporter": "^5.0",
         "guzzlehttp/guzzle": "^7.2",
         "memochou1993/lexicon-api-php-client": "^0.1.9"
     },
     "require-dev": {
-        "orchestra/testbench": "^5.3"
+        "orchestra/testbench": "^6.2"
     },
     "autoload": {
         "psr-4": {
