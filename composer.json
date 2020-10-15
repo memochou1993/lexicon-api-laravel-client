@@ -1,6 +1,6 @@
 {
     "name": "memochou1993/lexicon-api-client-laravel",
-    "description": "Lexicon API client for Laravel",
+    "description": "Lexicon API Client Library for Laravel",
     "type": "library",
     "keywords": [
         "localization"
@@ -17,8 +17,8 @@
         "ext-json": "*",
         "laravel/framework": "^7.0",
         "symfony/var-exporter": "^5.0",
-        "guzzlehttp/guzzle": "^6.5",
-        "memochou1993/lexicon-api-php-client": "^0.1.7"
+        "guzzlehttp/guzzle": "^7.2",
+        "memochou1993/lexicon-api-php-client": "^0.1.9"
     },
     "require-dev": {
         "orchestra/testbench": "^5.3"
