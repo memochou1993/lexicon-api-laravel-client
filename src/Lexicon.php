@@ -2,7 +2,7 @@
 
 namespace MemoChou1993\Lexicon;
 
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\VarExporter\Exception\ExceptionInterface;
@@ -106,7 +106,7 @@ class Lexicon
             $this->setProject($data);
 
             return $data;
-        } catch (RequestException $e) {
+        } catch (GuzzleException $e) {
             abort($e->getCode(), $e->getMessage());
         }
     }
