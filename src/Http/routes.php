@@ -1,5 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use MemoChou1993\Lexicon\Http\Controllers\DispatchController;
 
-Route::post('/', 'EventController@index');
+Route::post('/', DispatchController::class);

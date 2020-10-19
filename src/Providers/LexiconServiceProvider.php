@@ -26,7 +26,6 @@ class LexiconServiceProvider extends ServiceProvider
         $this->app->singleton(Client::class, function() {
             return new Client([
                 'host' => config('lexicon.host'),
-                'project_id' => config('lexicon.project_id'),
                 'api_key' => config('lexicon.api_key'),
             ]);
         });
@@ -61,7 +60,6 @@ class LexiconServiceProvider extends ServiceProvider
         }
 
         Route::group([
-            'namespace' => 'MemoChou1993\Lexicon\Http\Controllers',
             'prefix' => '/api/'.config('lexicon.path'),
             'middleware' => config('lexicon.middleware', []),
         ], function () {

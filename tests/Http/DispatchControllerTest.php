@@ -6,7 +6,7 @@ use MemoChou1993\Lexicon\Facades\Lexicon;
 use MemoChou1993\Lexicon\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class EventControllerTest extends TestCase
+class DispatchControllerTest extends TestCase
 {
     /**
      * @return void
@@ -15,7 +15,7 @@ class EventControllerTest extends TestCase
     {
         $this
             ->withHeaders([
-                'X-Lexicon-API-Key' => config('lexicon.api_key'),
+                'Authorization' => sprintf('Bearer %s', config('lexicon.api_key')),
             ])
             ->json('POST', '/api/'.config('lexicon.path'), [
                 'events' => [

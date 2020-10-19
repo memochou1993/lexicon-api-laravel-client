@@ -19,9 +19,7 @@ class Authorize
      */
     public function handle($request, $next)
     {
-        $apiKey = config('lexicon.api_key');
-
-        if (! ($request->header('X-Lexicon-API-Key') === $apiKey)) {
+        if (! ($request->bearerToken() === config('lexicon.api_key'))) {
             throw new AuthenticationException();
         }
 

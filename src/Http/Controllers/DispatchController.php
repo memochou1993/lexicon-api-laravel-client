@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Event;
 use Symfony\Component\HttpFoundation\Response;
 
-class EventController extends Controller
+class DispatchController extends Controller
 {
     /**
      * The events for the application.
@@ -25,7 +25,7 @@ class EventController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request)
+    public function __invoke(Request $request)
     {
         collect($request->input('events'))
             ->intersect($this->events)
