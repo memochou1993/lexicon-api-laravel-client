@@ -208,7 +208,7 @@ class Lexicon
 
         $path = sprintf('%s/%s.php', $directory, $this->filename());
 
-        file_put_contents($path, $data);
+        File::put($path, $data);
     }
 
     /**
